@@ -1,8 +1,10 @@
-FROM aerospike/aerospike-server
+FROM node:6-slim
 
-COPY aerospike.conf /etc/aerospike/aerospike.conf.template
-COPY configure.py /configure.py
-COPY entrypoint.sh /entrypoint.sh
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["asd"]
+COPY package.json /usr/src/app/
+RUN npm install
+COPY . /usr/src/app
+
+CMD [ "npm", "start" ]
